@@ -1,0 +1,20 @@
+version : '2.6'
+services:
+  dev:
+    image: tensorflow/tensorflow:2.8.0
+    working_dir: /app
+    volumes:
+      - ./:/app
+    entrypoint: ["python"]
+  serve:
+    image: tensorflow/serving:2.8.0
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      - MODEL_BASE_PATH=/app
+      - MODEL_NAME=test_model.tf
+    ports:
+      - 8501:8501
+    command: ["--enable_batching=true", "--batching_parameters_file=tf_serving_batch_config"]
+
